@@ -15,7 +15,7 @@ var app = angular.module('todoListApp');
                 data: $scope.usuarioCadastro
             }).then(function(retorno) {
                 if (retorno.data.id_usuario!=undefined) {
-                    console.log(retorno.data);
+                    $window.location.href = '#/';
                 }else{
                     $scope.formCadastro.$setPristine();
                     $scope.erroFormulario = retorno.data.response;
