@@ -1,0 +1,288 @@
+<link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.css" />
+<script src="../assets/js/moment.js"></script>
+<script src="../assets/js/sweetalert.min.js"></script>
+<script src="../node_modules/sortablejs/Sortable.js"></script>
+
+<style>
+    .container-titulo {
+        height: 15%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        background-color: #949292;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+        padding: 0px 20px 0px 20px;
+    }
+
+    .container-body {
+        width: 90%;
+        background-color: white;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container-atividade {
+        display: flex;
+        width: 100%;
+        height: 550px;
+        flex-direction: column;
+        align-items: center;
+        overflow: auto;
+        padding: 20px 0px 0px 0px;
+    }
+
+    .font-titulo {
+        font-size: 30px;
+        color: white;
+    }
+
+    .atividade {
+        width: 90%; 
+        display: flex; 
+        flex-direction: column; 
+        margin-bottom: 20px;
+        padding: 0px 0px 10px 0px;
+    }
+
+    .topo-atividade {
+        display: flex;
+        width: 100%;
+        height: 30px;
+        align-items: center;
+        flex-direction: row;
+        padding: 5px 10px 0px 10px;
+    }
+
+    .body-atividade {
+        padding: 0px 10px; 
+        display: flex; 
+        flex-direction: column; 
+        height: 140px;
+    }
+
+    .ghost {
+        opacity: .5;
+    }
+
+</style>
+<script>
+    Sortable.create(TD, {
+        handle: '.fa-arrows-alt',
+        animation: 150,
+        group: 'shared',
+        ghostClass: 'ghost',
+
+        onAdd: function (evt) {
+            var scope = angular.element(document.getElementById('atividadesId')).scope();
+            var info = evt.item.id.split("_");
+            
+            scope.updateStatusAtividade('TD', info[1], info[0], info[2]);
+            $('#'+evt.item.id).css("background-color", "rgb(0, 156, 224)");
+        }
+    });
+
+    Sortable.create(DG, {
+        handle: '.fa-arrows-alt',
+        animation: 150,
+        group: 'shared',
+        ghostClass: 'ghost',
+
+        onAdd: function (evt) {           
+            var scope = angular.element(document.getElementById('atividadesId')).scope();
+            var info = evt.item.id.split("_");
+
+            scope.updateStatusAtividade('DG', info[1], info[0], info[2]);
+            $('#'+evt.item.id).css("background-color", "rgb(213, 243, 92)");
+        }
+    });
+
+    Sortable.create(DN, {
+        handle: '.fa-arrows-alt',
+        animation: 150,
+        group: 'shared',
+        ghostClass: 'ghost',
+
+        onAdd: function (evt) {
+            var scope = angular.element(document.getElementById('atividadesId')).scope();
+            var info = evt.item.id.split("_");
+
+            scope.updateStatusAtividade('DN', info[1], info[0], info[2]);
+            $('#'+evt.item.id).css("background-color", "rgb(0, 167, 51)");
+        }
+    });
+</script>
+<title>Atividades</title>
+<div id="atividadesId">
+    <div class="container" style="margin-top: 40px;">
+        <div class="row justify-content-center" style="height: 600px;" id="container_atividade">
+
+            <div class="col-md-4 d-flex justify-content-center">
+                <div class="container-body">
+                    <div class="container-titulo">
+                        <div style="display: flex; width: 50%;">
+                            <label class="font-titulo">To do</label>
+                        </div>
+                        <div style="display: flex; width: 50%; justify-content: flex-end;">
+                            <button type="button" class="btn btn-primary" ng-click="abreModalNovaAtividade('TD')">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="container-atividade" id="TD">
+                            <div class="atividade" ng-repeat="(key_td, td) in atividadesTD" id="{{td.status}}_{{td.idAtividade}}_{{key_td}}" style="background-color: #009ce0;">
+                                <div class="topo-atividade">
+                                    <div style="display: flex; width: 50%;">
+                                        <i class="fas fa-arrows-alt" style="margin-right: 5px; cursor: move;"></i>
+                                    </div>
+                                    <div style="display: flex; width: 50%;  justify-content: flex-end;">
+                                        <i class="fas fa-pen" style="margin-right: 5px; cursor: pointer;" ng-click="abreModalEditarAtividade(td)"></i>
+                                        <i class="fas fa-times-circle" style="cursor: pointer;" ng-click="apagaAtividade(td.idAtividade)"></i>
+                                    </div>
+                                </div>
+                                <div class="body-atividade">
+                                    <label style="margin-bottom: auto;">Título: {{td.nome}}</label>
+                                    <label style="margin-bottom: auto;">Prazo: {{td.dtPrazo}}</label>
+                                    <textarea class="form-control" rows="4" ng-disabled="true" style=" resize: none;">{{td.descricao}}</textarea>
+                                </div> 
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 d-flex justify-content-center">
+                <div class="container-body">
+                    <div class="container-titulo">
+                        <div style="display: flex; width: 50%;">
+                            <label class="font-titulo">Doing</label>
+                        </div>
+                        <div style="display: flex; width: 50%; justify-content: flex-end;">
+                            <button type="button" class="btn btn-primary" ng-click="abreModalNovaAtividade('DG')">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="container-atividade" id="DG">
+                        <div class="atividade" ng-repeat="(key_dg, dg) in atividadesDG" id="{{dg.status}}_{{dg.idAtividade}}_{{key_dg}}" style="background-color: #d5f35c;">
+                            <div class="topo-atividade">
+                                <div style="display: flex; width: 50%;">
+                                    <i class="fas fa-arrows-alt" style="margin-right: 5px; cursor: move;"></i>
+                                </div>
+                                <div style="display: flex; width: 50%;  justify-content: flex-end;">
+                                    <i class="fas fa-pen" style="margin-right: 5px; cursor: pointer;" ng-click="abreModalEditarAtividade(dg)"></i>
+                                    <i class="fas fa-times-circle" style="cursor: pointer;" ng-click="apagaAtividade(dg.idAtividade)"></i>
+                                </div>
+                            </div>
+                            <div class="body-atividade">
+                                <label style="margin-bottom: auto;">Título: {{dg.nome}}</label>
+                                <label style="margin-bottom: auto;">Prazo: {{dg.dtPrazo}}</label>
+                                <textarea class="form-control" rows="4" ng-disabled="true" style=" resize: none;">{{dg.descricao}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 d-flex justify-content-center">
+                <div class="container-body">
+                    <div class="container-titulo">
+                        <div style="display: flex; width: 50%;">
+                            <label class="font-titulo">Done</label>
+                        </div>
+                        <div style="display: flex; width: 50%; justify-content: flex-end;">
+                            <button type="button" class="btn btn-primary" ng-click="abreModalNovaAtividade('DN')">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="container-atividade" id="DN">
+                        <div class="atividade" ng-repeat="(key_dn, dn) in atividadesDN" id="{{dn.status}}_{{dn.idAtividade}}_{{key_dn}}" style="background-color: #00a733;">
+                            <div class="topo-atividade">
+                                <div style="display: flex; width: 50%;">
+                                    <i class="fas fa-arrows-alt" style="margin-right: 5px; cursor: move;"></i>
+                                </div>
+                                <div style="display: flex; width: 50%;  justify-content: flex-end;">
+                                    <i class="fas fa-pen" style="margin-right: 5px; cursor: pointer;" ng-click="abreModalEditarAtividade(dn)"></i>
+                                    <i class="fas fa-times-circle" style="cursor: pointer;" ng-click="apagaAtividade(dn.idAtividade)"></i>
+                                </div>
+                            </div>
+                            <div class="body-atividade">
+                                <label style="margin-bottom: auto;">Título: {{dn.nome}}</label>
+                                <label style="margin-bottom: auto;">Prazo: {{dn.dtPrazo}}</label>
+                                <textarea class="form-control" rows="4" ng-disabled="true" style=" resize: none;" ng->{{dn.descricao}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_edita_atividade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edita Atividade</h5>
+                <button type="button" class="close" ng-click="fecharModalEditaAtividade()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form name="formEditaAtividade">
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Título:</label>
+                        <input class="form-control" id="titulo_edita_atividade" name="titulo_edita_atividade" ng-model="editaAtividade.nome" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Data Prazo:</label>
+                        <input type="text" class="form-control" id="dt_prazo_edita_atividade" name="dt_prazo_edita_atividade" ng-model="editaAtividade.dtPrazo" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Descrição:</label>
+                        <textarea class="form-control" id="descricao_edita_atividade" name="descricao_edita_atividade" ng-model="editaAtividade.descricao" ng-trim="true" ng-maxlength="255"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" ng-click="fecharModalEditaAtividade()">Fechar</button>
+                <button type="button" class="btn btn-primary" ng-disabled="formEditaAtividade.$invalid || formEditaAtividade.$pristine" ng-click="editAtividade()">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_nova_atividade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add. Atividade</h5>
+                <button type="button" class="close" ng-click="fecharModalNovaAtividade()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form name="formAddAtividade">
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Título:</label>
+                        <input class="form-control" id="titulo_adiciona_atividade" name="titulo_adiciona_atividade" ng-model="adicionaAtividade.titulo" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Data Prazo:</label>
+                        <input type="text" class="form-control" id="dt_prazo" name="dt_prazo" ng-model="adicionaAtividade.dt_prazo" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Descrição:</label>
+                        <textarea class="form-control" id="descricao_adiciona_atividade" name="descricao_adiciona_atividade" ng-model="adicionaAtividade.descricao" ng-trim="true" ng-maxlength="255"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" ng-click="fecharModalNovaAtividade()">Fechar</button>
+                <button type="button" class="btn btn-primary" ng-disabled="formAddAtividade.$invalid" ng-click="setAtividade()">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>

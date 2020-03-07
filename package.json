@@ -1,0 +1,16 @@
+{
+  "name": "angularjs",
+  "version": "1.0.0",
+  "description": "angularjs project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server -a 127.0.0.1 -p 9000"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.1",
+    "sortablejs": "^1.10.2"
+  }
+}
