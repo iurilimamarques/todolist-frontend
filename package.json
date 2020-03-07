@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.12.1",
+    "http-server": "^0.12.1",
     "sortablejs": "^1.10.2"
   }
 }
