@@ -4,8 +4,10 @@ var app = angular.module('todoListApp');
         $scope.usuarioCadastro = {};
         $scope.usuarioLogin = {};
         $scope.erroFormulario = '';
+        $scope.loading = false;
         
         $scope.setUsuario = function() {
+            $scope.loading = true;
             $http({ 
                 method: 'POST',
                 url: BASE_URL+'/api/usuario',
@@ -14,8 +16,9 @@ var app = angular.module('todoListApp');
                 },
                 data: $scope.usuarioCadastro
             }).then(function(retorno) {
+                $scope.loading = false;
                 if (retorno.data.id_usuario!=undefined) {
-                    console.log(retorno.data);
+                    $window.location.href = '#/';
                 }else{
                     $scope.formCadastro.$setPristine();
                     $scope.erroFormulario = retorno.data.response;
@@ -26,6 +29,7 @@ var app = angular.module('todoListApp');
         }
 
         $scope.loginUsuario = function() {        
+            $scope.loading = true;
             $http({
                 method: 'POST',
                 url: BASE_URL+'/api/login',
@@ -33,7 +37,8 @@ var app = angular.module('todoListApp');
                         'Accept': 'application/json'
                 },
                 data: $scope.usuarioLogin
-            }).then(function(retorno) {                                
+            }).then(function(retorno) {         
+                $scope.loading = false;
                 if (retorno.data.response==null) {
                     $scope.formLogin.$setPristine();
                     $scope.erroLogin = 'Nenhum usuário com este e-mail!';
