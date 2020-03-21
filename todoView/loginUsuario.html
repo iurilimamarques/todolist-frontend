@@ -27,7 +27,7 @@
                             <div class="row" style="display: flex; justify-content: center;">
                                 <label style="color: red;">{{erroLogin}}</label>
                             </div>
-                            <button class="btn btn-success form-control" type="submit" ng-disabled="formLogin.$invalid || (erroLogin!='' && formLogin.$pristine)">
+                            <button class="btn btn-success form-control" type="submit" ng-disabled="formLogin.$invalid || (erroLogin!='' && formLogin.$pristine) || loading">
                                 <span ng-show="!loading">Entrar</span>
                                 <img ng-show="loading" src="../imgs/load.gif"/>
                             </button>

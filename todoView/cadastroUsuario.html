@@ -39,7 +39,7 @@
                             <div class="row" style="display: flex; justify-content: center;">
                                 <label style="color:red;">{{erroFormulario}}</label>
                             </div>
-                            <button class="btn btn-success form-control" type="submit" ng-disabled="formCadastro.$invalid || (erroFormulario!='' && formCadastro.$pristine)">
+                            <button class="btn btn-success form-control" type="submit" ng-disabled="formCadastro.$invalid || (erroFormulario!='' && formCadastro.$pristine) || loading">
                                 <span ng-show="!loading">Cadastrar</span>
                                 <img ng-show="loading" src="../imgs/load.gif"/>
                             </button>
